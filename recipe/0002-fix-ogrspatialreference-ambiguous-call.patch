@@ -1,0 +1,34 @@
+From ec10e274ee765aa54e7c71c8b44d2c7494e63804 Mon Sep 17 00:00:00 2001
+From: Even Rouault <even.rouault@spatialys.com>
+Date: Sat, 21 Apr 2018 21:41:49 +0200
+Subject: [PATCH] gt_citation.cpp: fix compilation against GDAL 2.3
+
+The call to GetAngularUnits(NULL) is ambiguous since there is now
+    double      GetAngularUnits( char ** ) const CPL_WARN_DEPRECATED("Use GetAngularUnits(const char**) instead");
+    double      GetAngularUnits( const char ** = nullptr ) const;
+    double      GetAngularUnits( std::nullptr_t ) const
+
+But GetAngularUnits(NULL) doesn't match GetAngularUnits( std::nullptr_t )
+
+This change is also compatible of previous GDAL version
+---
+ src/gt_citation.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/gt_citation.cpp b/src/gt_citation.cpp
+index 8d3966bc5c4eafeebd93d423210f6a68c0373c16..c2b5eb86c172ba170ad029cb94b3f361a5b90363 100644
+--- a/src/gt_citation.cpp
++++ b/src/gt_citation.cpp
+@@ -387,10 +387,10 @@ void SetGeogCSCitation(GTIF * psGTIF, OGRSpatialReference *poSRS, char* angUnitN
+         osCitation += primemName;
+         bRewriteGeogCitation = TRUE;
+ 
+-        double primemValue = poSRS->GetPrimeMeridian(NULL);
++        double primemValue = poSRS->GetPrimeMeridian();
+         if(angUnitName && !EQUAL(angUnitName, "Degree"))
+         {
+-            double aUnit = poSRS->GetAngularUnits(NULL);
++            double aUnit = poSRS->GetAngularUnits();
+             primemValue *= aUnit;
+         }
+         GTIFKeySet( psGTIF, GeogPrimeMeridianLongGeoKey, TYPE_DOUBLE, 1, 
