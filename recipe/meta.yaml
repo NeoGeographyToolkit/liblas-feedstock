@@ -1,0 +1,67 @@
+{% set version = "1.8.1" %}
+
+# Original from: https://github.com/OpenDataAnalytics/kitware-geospatial-recipes/tree/master/recipes/liblas
+
+package:
+  name: liblas
+  version: {{ version }}
+
+source:
+  url: https://github.com/libLAS/libLAS/archive/{{ version }}.tar.gz
+  sha256: 31cff4fd235f9397df8c3086b0aefc50a047d2be0e9ce39f0cddfc662633fa93
+  fn: libLAS-{{ version }}.tar.gz
+  patches:
+    - 0001-fix-thread-linking.patch
+    # Fix OGRSpatialReference::GetAngularUnits ambiguous call
+    - 0002-fix-ogrspatialreference-ambiguous-call.patch
+    # Fix build for Xcode 9 with upstream commit
+    # REMOVE in version > 1.8.1
+    - 0003-fix-xcode9-compilation.patch
+
+build:
+  number: 1
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - m2-patch  # [win]
+    - cmake
+    - ninja
+    # Need to be in build, so activated env vars are found
+    - libgdal
+    - geotiff
+  host:
+    - laszip
+    - libboost
+  run:
+    - laszip
+    - libboost
+    - libgdal
+    - geotiff
+
+test:
+  commands:
+    # This tests liblas and laszip integration
+    - lasinfo 1.2-with-color.laz
+  files:
+    - 1.2-with-color.laz
+
+about:
+  home: https://liblas.org/
+  license: BSD
+  license_file: LICENSE.txt
+  summary: Library for reading and writing the very common LAS LiDAR format.
+  description: |
+    libLAS is a C/C++ library for reading and writing the very common LAS LiDAR
+    format (LAS 1.0/1.1/1.2 ASPRS). The ASPRS LAS format is a sequential binary
+    format used to store data from LiDAR sensors and by LiDAR processing
+    software for data interchange and archival. As of 2018, libLAS has been
+    replaced by the PDAL project and it is in hibernation or maintenance mode.
+    libLAS does not provide support for LAS or LAZ 1.4, which PDAL does.
+  dev_url: https://github.com/libLAS/libLAS
+  doc_url: https://liblas.org/docs.html
+
+extra:
+  recipe-maintainers:
+    - dakcarto
