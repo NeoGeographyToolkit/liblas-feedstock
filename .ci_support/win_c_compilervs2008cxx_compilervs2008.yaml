@@ -1,0 +1,20 @@
+c_compiler:
+- vs2008
+channel_sources:
+- conda-forge,defaults
+channel_targets:
+- conda-forge main
+cxx_compiler:
+- vs2008
+geotiff:
+- 1.4.2
+libgdal:
+- '2.3'
+pin_run_as_build:
+  geotiff:
+    max_pin: x.x
+  libgdal:
+    max_pin: x.x
+zip_keys:
+- - c_compiler
+  - cxx_compiler
