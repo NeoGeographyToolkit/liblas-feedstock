@@ -20,23 +20,27 @@ source:
 
 build:
   number: 1
+  # merge envs so host dep env vars can be found for ctest
+  # merge_build_host: True  # [win]
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - m2-patch  # [win]
     - cmake
     - ninja
-    # Need to be in build, so activated env vars are found
+    # gdal env vars need found for ctest
+    - libgdal
+  host:
+    - libboost  # [win]
+    - boost-cpp  # [unix]
+    - laszip 2.2.*
     - libgdal
     - geotiff
-  host:
-    - laszip
-    - libboost
   run:
-    - laszip
-    - libboost
+    # libboost statically linked for win
+    - boost-cpp  # [unix]
+    - laszip 2.2.*
     - libgdal
     - geotiff
 
