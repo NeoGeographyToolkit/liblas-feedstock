@@ -19,7 +19,7 @@ source:
     - 0003-fix-xcode9-compilation.patch
 
 build:
-  number: 1
+  number: 1000
   # merge envs so host dep env vars can be found for ctest
   # merge_build_host: True  # [win]
 
@@ -29,17 +29,15 @@ requirements:
     - {{ compiler('cxx') }}
     - cmake
     - ninja
-    # gdal env vars need found for ctest
-    - libgdal
+    - m2-patch  # [win]
   host:
-    - libboost  # [win]
-    - boost-cpp  # [unix]
+    - boost-cpp
     - laszip 2.2.*
+    - libkml >=1.3.0
     - libgdal
     - geotiff
   run:
-    # libboost statically linked for win
-    - boost-cpp  # [unix]
+    - boost-cpp
     - laszip 2.2.*
     - libgdal
     - geotiff
