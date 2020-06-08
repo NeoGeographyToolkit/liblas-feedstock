@@ -31,12 +31,12 @@ requirements:
     - ninja
     - m2-patch  # [win]
   host:
-    - boost-cpp
+    - boost  1.68.0
     - laszip 2.1.0
     - gdal 2.0.2
     - geotiff 1.4.2
   run:
-    - boost-cpp
+    - boost 1.68.0
     - laszip 2.1.*
     - gdal 2.0.2
     - geotiff 1.4.2

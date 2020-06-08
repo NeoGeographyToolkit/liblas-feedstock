@@ -2,6 +2,9 @@
 
 set -e
 
+# Fix for missing liblzma.
+perl -pi -e "s#(/[^\s]*?lib)/lib([^\s]+).la#-L\$1 -l\$2#g" ${PREFIX}/lib/*.la
+
 mkdir build && cd build
 
 # Make libraries
