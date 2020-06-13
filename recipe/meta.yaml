@@ -34,12 +34,12 @@ requirements:
     - boost  1.68.0
     - laszip 2.1.0
     - gdal 2.0.2
-    - geotiff 1.4.2
+    - geotiff
   run:
     - boost 1.68.0
-    - laszip 2.1.*
+    - laszip 2.1.0
     - gdal 2.0.2
-    - geotiff 1.4.2
+    - geotiff
 
 test:
   commands:
